@@ -1,0 +1,19 @@
+create jdbc-datasource
+----------------------
+copy postgresql-9.3-1102.jdbc41.jar to the deployment directory (requires java 1.7)
+-> <install-directory>/standalone/deployments
+
+wait till JBoss has deployed the driver
+
+go to the admin page
+-> http://localhost:9990/console/App.html#datasources
+
+add a jdbc-datasource
+--> Name: jrLinkDS
+    JNDI Name: java:jboss/datasources/jrLinkDS
+--> chose driver postgresql-9.3-1102.jdbc41.jar
+--> Connection URL: jdbc:postgresql://localhost:5432/jrLink
+    Username: jrlink_user
+    Password: 123
+
+enable the datasource
