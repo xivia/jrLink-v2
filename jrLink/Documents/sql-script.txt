@@ -1,0 +1,52 @@
+begin;
+
+create sequence seq_lnkKey; -- start/increment: 1/1
+
+create table tLink (
+  lnkKey    int8 default nextval('seq_lnkKey'), 
+  lnkName   varchar(250),
+  lnkURL    varchar(2048),
+
+  constraint pk_lnkKey PRIMARY KEY (lnkKey)
+);
+
+
+create sequence seq_rolKey; -- start/increment: 1/1
+
+create table tRole (
+  rolKey        int8 default nextval('seq_rolKey'),
+  rolNameShort  varchar(10),
+  rolNameLong   varchar(250),
+  
+constraint pk_rolKey PRIMARY KEY (rolKey)
+);
+
+insert into tRole (rolNameShort, rolNameLong) values ('admin', 'Administrator');
+insert into tRole (rolNameShort, rolNameLong) values ('user', 'User');
+insert into tRole (rolNameShort, rolNameLong) values ('sync', 'Synchronizer');
+
+
+create sequence seq_usrKey; -- start/increment: 1/1
+
+create table tUser (
+  usrKey       int8 default nextval('seq_usrKey'),
+  usrRolId     int8,
+  usrName      varchar(250),
+  usrPassword  varchar(250),
+  usrActiveYN  boolean,
+  
+  constraint pk_usrKey PRIMARY KEY (usrKey),
+  constraint fk_usrRolId FOREIGN KEY (usrRolId) references tRole (rolKey) on delete CASCADE on update CASCADE DEFERRABLE initially DEFERRED
+);
+
+insert into tUser (usrRolId, usrName, usrPassword, usrActiveYN) values (1, 'admin', '123', true);
+
+
+grant ALL ON seq_lnkKey TO jrlink_user;
+grant ALL ON tLink TO jrlink_user;
+grant ALL ON seq_rolKey TO jrlink_user;
+grant ALL ON tRole TO jrlink_user;
+grant ALL ON seq_usrKey TO jrlink_user;
+grant ALL ON tUser TO jrlink_user;
+
+commit;

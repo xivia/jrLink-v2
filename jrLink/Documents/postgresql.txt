@@ -1,0 +1,13 @@
+create an own user
+------------------
+createuser -S -D -R -P -E jrlink_user
+-> PW: 123
+
+create database
+---------------
+createdb jrLink "jrLink Shared Links Library"
+
+create table and initial data
+-----------------------------
+psql -d jrLink
+-> run script: sql-script.txt
