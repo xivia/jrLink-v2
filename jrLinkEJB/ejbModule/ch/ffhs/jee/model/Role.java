@@ -58,7 +58,7 @@ public class Role implements Serializable {
 		this.nameShort = nameShort;
 	}
 
-	public List<User> getTusers() {
+	public List<User> getUsers() {
 		return this.users;
 	}
 
@@ -67,14 +67,14 @@ public class Role implements Serializable {
 	}
 
 	public User addUser(User user) {
-		getTusers().add(user);
+		getUsers().add(user);
 		user.setRole(this);
 
 		return user;
 	}
 
 	public User removeUser(User user) {
-		getTusers().remove(user);
+		getUsers().remove(user);
 		user.setRole(null);
 
 		return user;
