@@ -14,7 +14,9 @@ import javax.ws.rs.core.Response;
 
 import ch.ffhs.jee.util.ErrorWs;
 import ch.ffhs.jee.controller.LinkBeanLocal;
+import ch.ffhs.jee.controller.UserBeanLocal;
 import ch.ffhs.jee.model.Link;
+import ch.ffhs.jee.model.User;
 
 @Path("link")
 @Stateless
@@ -22,6 +24,8 @@ public class LinkWs {
 	
 	@EJB
 	private LinkBeanLocal linkBean;
+	@EJB
+	private UserBeanLocal userBean;
 	
 	public LinkWs() { }
 	
@@ -29,13 +33,20 @@ public class LinkWs {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAll( @QueryParam(value = "u") String user, 
 							@QueryParam(value = "p") String password) {
+		Response response;
 		
 		// check user, password
+		User luser = userBean.getByCredentials(user, password);
 		
+		if (luser != null) {
+			Collection<Link> links = linkBean.getList();
+			response = Response.status(200).entity(links).build();
+		} else {
+			ErrorWs err = new ErrorWs("401","unauthorized");
+			response = Response.status(401).entity(err).build();
+		}
 		
-		Collection<Link> links = linkBean.getList();
-		
-		return Response.status(200).entity(links).build();
+		return response;
 	}
 	
 	@GET
