@@ -26,8 +26,7 @@ public class Link implements Serializable {
 	@Column(name="lnkurl")
 	private String url;
 
-	public Link() {
-	}
+	public Link() { }
 
 	public Long getId() {
 		return this.id;

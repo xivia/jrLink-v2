@@ -34,8 +34,7 @@ public class User implements Serializable {
 	@JoinColumn(name="usrrolid")
 	private Role role;
 
-	public User() {
-	}
+	public User() { }
 
 	public Long getId() {
 		return this.id;
