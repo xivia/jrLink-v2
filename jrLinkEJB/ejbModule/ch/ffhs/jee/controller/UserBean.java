@@ -5,6 +5,7 @@ import java.util.Collection;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import ch.ffhs.jee.model.Role;
 import ch.ffhs.jee.model.User;
@@ -34,15 +35,28 @@ public class UserBean implements UserBeanLocal {
 	}
 
 	@Override
+	public User getByCredentials(String user, String password) {
+		Query q = em.createNamedQuery("User.findByCredentials", User.class);
+		q.setParameter("name", user);
+		q.setParameter("password", password);
+
+		if (!q.getResultList().isEmpty()) {
+			return (User) q.getSingleResult();
+		} else {
+			return null;
+		}
+	}
+
+	@Override
 	public void create(Role role, String name, String password, Boolean isActive) {
 		// TODO Auto-generated method stub
-		
+		// TODO check unique name
 	}
 
 	@Override
 	public void update(Long id, Role role, String name, String password, Boolean isActive) {
 		// TODO Auto-generated method stub
-		
+		// TODO check unique name
 	}
 
 	@Override

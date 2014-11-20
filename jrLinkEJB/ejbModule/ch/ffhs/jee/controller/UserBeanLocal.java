@@ -19,6 +19,11 @@ public interface UserBeanLocal {
 	 * get one record by id
 	 */
 	User getById(Long id);
+	
+	/**
+	 * get user by credentials (check user/password)
+	 */
+	User getByCredentials(String user, String password);
 
 	/**
 	 * add record
