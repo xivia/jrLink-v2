@@ -11,6 +11,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import ch.ffhs.jee.util.ErrorWs;
+
 import ch.ffhs.jee.controller.LinkBeanLocal;
 import ch.ffhs.jee.model.Link;
 
@@ -50,10 +52,12 @@ public class LinkWs {
 			if (links != null) {
 				response = Response.status(200).entity(links).build();
 			} else {
-				response = Response.status(404).entity("not found").build();
+				ErrorWs err = new ErrorWs("404","not found");
+				response = Response.status(404).entity(err).build();
 			}
 		} else {
-			response = Response.status(400).entity("bad request").build();
+			ErrorWs err = new ErrorWs("400","bad request");
+			response = Response.status(400).entity(err).build();
 		}
 		
 		return response;
