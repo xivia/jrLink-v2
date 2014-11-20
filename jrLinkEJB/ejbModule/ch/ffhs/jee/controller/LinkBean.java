@@ -61,7 +61,5 @@ public class LinkBean implements LinkBeanLocal {
 		if (link != null) em.remove(link);
 		em.flush();
 	}
-    
-    
 
 }
