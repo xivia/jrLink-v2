@@ -12,7 +12,9 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import ch.ffhs.jee.util.ErrorWs;
+import ch.ffhs.jee.util.ErrorWs400;
+import ch.ffhs.jee.util.ErrorWs401;
+import ch.ffhs.jee.util.ErrorWs404;
 import ch.ffhs.jee.controller.LinkBeanLocal;
 import ch.ffhs.jee.controller.UserBeanLocal;
 import ch.ffhs.jee.model.Link;
@@ -42,8 +44,7 @@ public class LinkWs {
 			Collection<Link> links = linkBean.getList();
 			response = Response.status(200).entity(links).build();
 		} else {
-			ErrorWs err = new ErrorWs("401","unauthorized");
-			response = Response.status(401).entity(err).build();
+			response = Response.status(401).entity(new ErrorWs401()).build();
 		}
 		
 		return response;
@@ -57,25 +58,32 @@ public class LinkWs {
 							@QueryParam(value = "p") String password) {
 		Response response;
 		
-		Long lid;
-		try {
-			lid = Long.parseLong(id); 
-		} 
-		catch (NumberFormatException e) {
-			lid = new Long(-1);
-		}
+		// check user, password
+		User luser = userBean.getByCredentials(user, password);
 		
-		if (lid > 0) {
-			Link links = linkBean.getById(new Long(lid));
-			if (links != null) {
-				response = Response.status(200).entity(links).build();
+		if (luser != null) {
+			Long lid;
+			try {
+				lid = Long.parseLong(id); 
+			} 
+			catch (NumberFormatException e) {
+				lid = new Long(0);
+			}
+			
+			// check id (above catch) 
+			if (lid > 0) {
+				Link links = linkBean.getById(new Long(lid));
+				// check id (in database)
+				if (links != null) {
+					response = Response.status(200).entity(links).build();
+				} else {
+					response = Response.status(404).entity(new ErrorWs404()).build();
+				}
 			} else {
-				ErrorWs err = new ErrorWs("404","not found");
-				response = Response.status(404).entity(err).build();
+				response = Response.status(400).entity(new ErrorWs400()).build();
 			}
 		} else {
-			ErrorWs err = new ErrorWs("400","bad request");
-			response = Response.status(400).entity(err).build();
+			response = Response.status(401).entity(new ErrorWs401()).build();
 		}
 		
 		return response;

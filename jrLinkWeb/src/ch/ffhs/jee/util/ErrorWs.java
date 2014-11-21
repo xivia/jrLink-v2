@@ -6,13 +6,13 @@ public class ErrorWs {
 	private String message;
 	
 	public ErrorWs () {
-		this.code = "";
-		this.message = "";
+		this.setCode("500");
+		this.setMessage("internal server error");
 	}
 	
 	public ErrorWs (String code, String message) {
-		this.code = code;
-		this.message = message;
+		this.setCode(code);;
+		this.setMessage(message);
 	}	
 	
 	public String getCode() {
