@@ -32,22 +32,4 @@ public class RoleBean implements RoleBeanLocal {
 		return em.find(Role.class, new Long(id));
 	}
 
-	@Override
-	public void create(String name, String desciption) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void update(Long id, String name, String desciption) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void delete(Long id) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

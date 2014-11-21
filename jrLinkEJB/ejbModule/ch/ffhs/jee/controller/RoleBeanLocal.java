@@ -19,19 +19,4 @@ public interface RoleBeanLocal {
 	 */
 	Role getById(Long id);
 
-	/**
-	 * add record
-	 */
-	void create(String name, String desciption);
-	
-	/**
-	 * update record
-	 */
-	void update(Long id, String name, String desciption);
-	
-	/**
-	 * delete record
-	 */
-	void delete(Long id);
-	
 }
