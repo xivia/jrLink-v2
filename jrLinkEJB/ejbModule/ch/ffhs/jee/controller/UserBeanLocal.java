@@ -28,12 +28,12 @@ public interface UserBeanLocal {
 	/**
 	 * add record
 	 */
-	void create(Role role, String name, String password, Boolean isActive);
+	Long create(Role role, String name, String password, Boolean isActive);
 	
 	/**
 	 * update record
 	 */
-	void update(Long id, Role role, String name, String password, Boolean isActive);
+	Long update(Long id, Role role, String name, String password, Boolean isActive);
 	
 	/**
 	 * delete record

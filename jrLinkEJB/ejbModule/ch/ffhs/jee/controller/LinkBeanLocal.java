@@ -22,7 +22,7 @@ public interface LinkBeanLocal {
 	/**
 	 * add record
 	 */
-	void create(String name, String url);
+	Long create(String name, String url);
 	
 	/**
 	 * update record

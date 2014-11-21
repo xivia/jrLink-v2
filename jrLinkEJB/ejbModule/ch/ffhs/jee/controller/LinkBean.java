@@ -33,7 +33,7 @@ public class LinkBean implements LinkBeanLocal {
 	}
 
 	@Override
-	public void create(String name, String url) {
+	public Long create(String name, String url) {
 		Link link = new Link();
 		
 		link.setName(name);
@@ -41,6 +41,8 @@ public class LinkBean implements LinkBeanLocal {
 		
 		em.persist(link);
 		em.flush();
+		
+		return link.getId();
 	}
 
 	@Override
