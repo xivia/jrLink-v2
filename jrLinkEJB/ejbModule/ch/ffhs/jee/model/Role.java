@@ -79,4 +79,16 @@ public class Role implements Serializable {
 		return user;
 	}
 
+	public Boolean isAdministrator() {
+		return (this.getNameShort().compareTo("admin") == 0);
+	}
+	
+	public Boolean isSynchronizer() {
+		return (this.getNameShort().compareTo("sync") == 0);
+	}
+	
+	public Boolean isUser() {
+		return (this.getNameShort().compareTo("user") == 0);
+	}
+	
 }
