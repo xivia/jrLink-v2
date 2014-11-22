@@ -50,14 +50,14 @@ public class UserBean implements UserBeanLocal {
 	@Override
 	public Long create(Role role, String name, String password, Boolean isActive) {
 		// TODO Auto-generated method stub
-		// TODO check unique name
+		// TODO check unique name - unique login/pw
 		return new Long(0);
 	}
 
 	@Override
 	public Long update(Long id, Role role, String name, String password, Boolean isActive) {
 		// TODO Auto-generated method stub
-		// TODO check unique name
+		// TODO check unique name - unique login/pw
 		return new Long(0);
 	}
 
