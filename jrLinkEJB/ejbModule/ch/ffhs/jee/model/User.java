@@ -13,6 +13,8 @@ import javax.persistence.*;
 @NamedQueries({
 	@NamedQuery(name="User.findAll", 
 				query="SELECT u FROM User u"),
+	@NamedQuery(name="User.findByName", 
+				query="SELECT u FROM User u WHERE u.name = :name"),
 	@NamedQuery(name="User.findByCredentials", 
 				query="SELECT u FROM User u "
 					+ "WHERE u.name = :name AND u.password = :password AND u.active = true")
