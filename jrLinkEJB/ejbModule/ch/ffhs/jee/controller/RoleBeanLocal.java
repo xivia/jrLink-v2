@@ -18,5 +18,10 @@ public interface RoleBeanLocal {
 	 * get one record by id
 	 */
 	Role getById(Long id);
+	
+	/**
+	 * get one record by name
+	 */
+	Role getByName(String name);	
 
 }
