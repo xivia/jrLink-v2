@@ -79,7 +79,7 @@ public class UserWs {
 					Collection<User> rusers = new ArrayList<User>();
 					rusers.add(ruser);
 					
-					response = Response.status(200).entity(formatJSON(rusers)).build();
+					response = Response.status(200).entity(formatJSON(rusers).iterator().next()).build();
 				} else {
 					response = Response.status(404).entity(new ErrorWs404()).build();
 				}
