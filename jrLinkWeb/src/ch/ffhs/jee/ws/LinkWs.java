@@ -116,9 +116,9 @@ public class LinkWs {
 			
 			// check id (above catch) 
 			if (lid > 0) {
-				Link links = linkBean.getById(new Long(lid));
+				Link clink = linkBean.getById(new Long(lid));
 				// check id (in database)
-				if (links != null) {
+				if (clink != null) {
 					linkBean.update(lid, link.getName(), link.getUrl());
 					Link updLink = linkBean.getById(new Long(lid));
 					
@@ -181,9 +181,9 @@ public class LinkWs {
 			
 			// check id (above catch) 
 			if (lid > 0) {
-				Link links = linkBean.getById(new Long(lid));
+				Link clink = linkBean.getById(new Long(lid));
 				// check id (in database)
-				if (links != null) {
+				if (clink != null) {
 					linkBean.delete(lid);
 					
 					response = Response.status(200).entity("").build();
