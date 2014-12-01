@@ -100,10 +100,10 @@ public class UserBean implements UserBeanLocal {
 		if (!userExists) {
 			User user = getById(id);
 			
-			user.setRole(role);
-			user.setName(name);
-			user.setPassword(password);
-			user.setActive(isActive);
+			if (role != null) user.setRole(role);
+			if (name != null) user.setName(name);
+			if (password != null) user.setPassword(password);
+			if (isActive != null) user.setActive(isActive);
 			
 			em.merge(user);
 			em.flush();
