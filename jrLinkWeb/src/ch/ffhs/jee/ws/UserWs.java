@@ -9,7 +9,9 @@ import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -148,7 +150,7 @@ public class UserWs {
 														uuser.isActive());
 						
 						if (result > 0) {
-							User updUser = userBean.getById(new Long(lid));
+							User updUser = userBean.getById(new Long(result));
 							
 							Collection<User> rusers = new ArrayList<User>();
 							rusers.add(updUser);
@@ -173,11 +175,90 @@ public class UserWs {
 		return response;
 	}
 	
-	// TODO post
-	// -> role not found?
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response create(UserData nuser, 
+			   			   @QueryParam(value = "u") String user, 
+			   			   @QueryParam(value = "p") String password) {
+		Response response;
+		
+		// check user, password
+		User luser = userBean.getByCredentials(user, password);
+		
+		if ((luser != null) && (luser.isAdministrator())) {
+			// check required fields
+			if ((nuser.getName() != null) && (nuser.getPassword() != null)) {	
+				// check role (in database)
+				if (roleBean.getByName(nuser.getRole()) != null) {
+					
+					Long result = userBean.create(roleBean.getByName(nuser.getRole()), 
+													nuser.getName(), nuser.getPassword(), 
+													nuser.isActive());
+					
+					if (result > 0) {
+						User updUser = userBean.getById(new Long(result));
+						
+						Collection<User> rusers = new ArrayList<User>();
+						rusers.add(updUser);
+						
+						response = Response.status(200).entity(formatJSON(rusers).iterator().next()).build();						
+					} else {
+						response = Response.status(409).entity(new ErrorWs409()).build();						
+					}
+				} else {
+					response = Response.status(404).entity(new ErrorWs404Role()).build();
+				}
+			} else {
+				response = Response.status(400).entity(new ErrorWs400()).build();
+			}
+		} else {
+			response = Response.status(401).entity(new ErrorWs401()).build();
+		}
+		
+		return response;
+	}
 	
-	// TODO delete
-	
+	@DELETE
+	@Path("{id}/")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response delete(@PathParam("id") String id, 
+			   			   @QueryParam(value = "u") String user, 
+			   			   @QueryParam(value = "p") String password) {			
+		Response response;
+
+		// check user, password
+		User luser = userBean.getByCredentials(user, password);
+				
+		if ((luser != null) && (luser.isAdministrator())) {
+			Long lid;
+			try {
+				lid = Long.parseLong(id); 
+			} 
+			catch (NumberFormatException e) {
+				lid = new Long(0);
+			}
+			
+			// check id (above catch) 
+			if (lid > 0) {
+				User cuser = userBean.getById(new Long(lid));
+				// check id (in database)
+				if (cuser != null) {
+					userBean.delete(lid);
+		
+					response = Response.status(200).entity("").build();
+				} else {
+					response = Response.status(404).entity(new ErrorWs404User()).build();
+				}
+			} else {
+				response = Response.status(400).entity(new ErrorWs400()).build();
+			}
+		} else {
+			response = Response.status(401).entity(new ErrorWs401()).build();
+		}
+
+		return response;
+	}
 	
 	Collection<Map<String, String>> formatJSON(Collection<User> users) {
 		Collection<Map<String, String>> myCollection = new ArrayList<Map<String,String>>();
