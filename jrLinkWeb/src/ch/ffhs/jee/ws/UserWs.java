@@ -23,7 +23,8 @@ import ch.ffhs.jee.controller.UserBeanLocal;
 import ch.ffhs.jee.model.User;
 import ch.ffhs.jee.util.ErrorWs400;
 import ch.ffhs.jee.util.ErrorWs401;
-import ch.ffhs.jee.util.ErrorWs404;
+import ch.ffhs.jee.util.ErrorWs404Role;
+import ch.ffhs.jee.util.ErrorWs404User;
 import ch.ffhs.jee.util.ErrorWs409;
 
 @Path("user")
@@ -100,7 +101,7 @@ public class UserWs {
 					
 					response = Response.status(200).entity(formatJSON(rusers).iterator().next()).build();
 				} else {
-					response = Response.status(404).entity(new ErrorWs404()).build();
+					response = Response.status(404).entity(new ErrorWs404User()).build();
 				}
 			} else {
 				response = Response.status(400).entity(new ErrorWs400()).build();
@@ -138,22 +139,29 @@ public class UserWs {
 				User cuser = userBean.getById(new Long(lid));
 				// check id (in database)
 				if (cuser != null) {
-					Long result = userBean.update(lid, roleBean.getByName(uuser.getRole()), 
-													uuser.getName(), uuser.getPassword(), 
-													uuser.isActive());
-					
-					if (result > 0) {
-						User updUser = userBean.getById(new Long(lid));
+					// check role (in database)
+					if ((uuser.getRole() == null) || 
+						(roleBean.getByName(uuser.getRole()) != null)) {
 						
-						Collection<User> rusers = new ArrayList<User>();
-						rusers.add(updUser);
+						Long result = userBean.update(lid, roleBean.getByName(uuser.getRole()), 
+														uuser.getName(), uuser.getPassword(), 
+														uuser.isActive());
 						
-						response = Response.status(200).entity(formatJSON(rusers).iterator().next()).build();						
+						if (result > 0) {
+							User updUser = userBean.getById(new Long(lid));
+							
+							Collection<User> rusers = new ArrayList<User>();
+							rusers.add(updUser);
+							
+							response = Response.status(200).entity(formatJSON(rusers).iterator().next()).build();						
+						} else {
+							response = Response.status(409).entity(new ErrorWs409()).build();						
+						}
 					} else {
-						response = Response.status(409).entity(new ErrorWs409()).build();						
+						response = Response.status(404).entity(new ErrorWs404Role()).build();
 					}
 				} else {
-					response = Response.status(404).entity(new ErrorWs404()).build();
+					response = Response.status(404).entity(new ErrorWs404User()).build();
 				}
 			} else {
 				response = Response.status(400).entity(new ErrorWs400()).build();
