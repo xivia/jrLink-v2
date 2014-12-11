@@ -94,7 +94,7 @@ public class UserBean implements UserBeanLocal {
 		Iterator<User> iter = getByName(name).iterator();
 		while(!userExists && iter.hasNext()) {
 			User item = iter.next();
-			if (item.getId() != id) userExists = true;
+			if (item.getId().compareTo(id) != 0) { userExists = true; }
 		}
 		
 		if (!userExists) {
