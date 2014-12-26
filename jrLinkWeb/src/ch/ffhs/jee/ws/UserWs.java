@@ -246,7 +246,7 @@ public class UserWs {
 				if (cuser != null) {
 					userBean.delete(lid);
 		
-					response = Response.status(200).entity("").build();
+					response = Response.status(200).entity("{}").build();
 				} else {
 					response = Response.status(404).entity(new ErrorWs404User()).build();
 				}

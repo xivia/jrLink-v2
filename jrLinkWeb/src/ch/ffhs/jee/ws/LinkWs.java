@@ -186,7 +186,7 @@ public class LinkWs {
 				if (clink != null) {
 					linkBean.delete(lid);
 					
-					response = Response.status(200).entity("").build();
+					response = Response.status(200).entity("{}").build();
 				} else {
 					response = Response.status(404).entity(new ErrorWs404()).build();
 				}

@@ -128,7 +128,7 @@ public class SyncWs {
 					// synchronize data
 					syncData(responseLinkList);
 					
-					response = Response.status(200).entity("").build();
+					response = Response.status(200).entity("{}").build();
 				} catch (Exception e) {
 					response = Response.status(400).entity(new ErrorWs400()).build();
 					// e.printStackTrace();
